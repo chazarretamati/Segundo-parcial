@@ -1,0 +1,306 @@
+1. Recuperatorio 2do. Parcial FRRe - Plan 2024
+1.1 Pregunta de Comparación (String vs StringBuffer)
+Código analizado: Comparación de referencias (==) en objetos StringBuffer y String.
+
+Java
+// ...
+StringBuffer sb1 = new StringBuffer("hola");
+StringBuffer sb2 = new StringBuffer("hola");
+StringBuffer sb3 = sb2;
+
+if (sb1 == sb2) s += "1"; // Falso (objetos distintos)
+if (sb2 == sb3) s += "2"; // Verdadero (misma referencia)
+
+String str1 = "chau";
+String str2 = "chau"; // str1 y str2 apuntan al mismo objeto (String Pool)
+String str3 = new String("chau"); // str3 es un nuevo objeto
+
+if (str1 == str2) s += "3"; // Verdadero (misma referencia en String Pool)
+if (str2 == str3) s += "4"; // Falso (objetos distintos)
+Salida Exacta: 23
+
+1.2 Dado el código en imagen adjunta, cual sería el resultado por Consola?
+List<String> x inicia con ["3", "7", "5"].
+
+new MyPancake().doStuff(x): La lista x es modificada por z.add("9"). x es ahora ["3", "7", "5", "9"].
+
+doStuff(x) retorna la referencia a esa misma lista.
+
+List<String> y recibe la misma referencia. Ahora x e y apuntan al mismo objeto.
+
+y.add("1"): Modifica la lista compartida. x es ahora ["3", "7", "5", "9", "1"].
+
+System.out.println(x) imprime el estado final de la lista x.
+
+Resultado por Consola: [3, 7, 5, 9, 1]
+
+
+1.3 Dado el código en imagen adjunta, cuál sería el resultado?
+class Fabric implements Runnable {
+    
+    // Este método estático NO sobreescribe el método de instancia 'run()' de Runnable.
+    public static void run() { 
+        System.out.println("run estático");
+    }
+    
+    // Implementación obligatoria de la interfaz Runnable
+    @Override
+    public void run() {
+        System.out.println("run de instancia");
+    }
+}
+
+public class ThreadTest {
+    public static void main(String[] args) {
+        // La línea del examen tiene un ERROR DE SINTAXIS. 
+        // Se intenta llamar a 'Thread' como un método en lugar de usar 'new'.
+        // Thread t2 = Thread(new Fabric()); // Línea 5 del examen (Error de compilación)
+        
+        // La sintaxis correcta sería:
+        // Thread t2 = new Thread(new Fabric()); 
+        
+        // Si el código NO compila, no hay salida en consola.
+    }
+}
+
+Respuesta: Error de compilación
+
+
+Dado el código en imagen adjunta, cuál es el resultado por Consola?
+public class EqualityTest {
+    public static void main(String[] args) {
+        String s = "";
+        
+        StringBuffer sb1 = new StringBuffer("agua");
+        StringBuffer sb2 = new StringBuffer("agua");
+        StringBuffer sb3 = new StringBuffer("sol");
+        StringBuffer sb4 = sb3; // Misma referencia
+
+        // StringBuffer NO anula equals(), por lo que compara referencias (igual que ==)
+        if (sb1.equals(sb2)) s += "1"; // Falso (distintas referencias)
+        if (sb2.equals(sb3)) s += "2"; // Falso (distintas referencias)
+        if (sb3.equals(sb4)) s += "3"; // Verdadero (misma referencia)
+
+        String s2 = "dia"; 
+        String s3 = "dia";
+        String s4 = new String("dia");
+
+        // String SÍ anula equals(), por lo que compara contenido
+        if (s2.equals(s3)) s += "4"; // Verdadero (mismo contenido)
+        if (s3.equals(s4)) s += "5"; // Verdadero (mismo contenido)
+
+        System.out.println(s);
+    }
+}
+Respuesta: 345
+
+Dado el código en imagen adjunta, cual sería el resultado?
+import java.util.HashMap;
+import java.util.Map;
+
+class Friends {
+    String name;
+
+    // Al no sobrescribir hashCode() y equals(), se usan los de Object, 
+    // que comparan la identidad del objeto (referencia).
+    public Friends(String name) {
+        this.name = name;
+    }
+}
+
+public class FriendsTest {
+    public static void main(String[] args) {
+        // Simulación de argumentos para el test
+        String[] testArgs = {"Draumur"}; 
+        
+        Map<Friends, Integer> hm = new HashMap<>();
+        
+        // Se insertan dos objetos Friends distintos (Key 1 y Key 2)
+        hm.put(new Friends("Charis"), 1);
+        hm.put(new Friends("Draumur"), 2);
+
+        // Se crea un TERCER objeto, que se usa para buscar (Key 3)
+        Friends f = new Friends(testArgs[0]); 
+        
+        // La búsqueda falla porque 'f' no es la misma instancia (referencia) 
+        // que la clave que contiene "Draumur" que fue insertada.
+        System.out.println(hm.get(f)); 
+    }
+}
+Respuesta: NULL
+
+
+Ejercicio Práctico 50 puntos
+La universidad desea implementar un pequeño sistema para registrar encuestas
+de satisfacción. Cada encuesta debe guardar el nombre de la persona y un
+puntaje del 1 al 5.
+Complete los 3 requerimientos en base al código del archivo:
+https://github.com/facundouferer/CursoDeJava/blob/recuperatorio2025/src/Par
+ciales/Parcial2025/Recuperatorio/EncuestadoraAvanzada.java
+Resolución:
+En la solución debe copiar el programa completo que ha elaborado, indicando
+también el código del archivo Encuestadora.java.
+Es importante que coloque todo el documento aquí y no se debe borrar el código
+que ya se ha desarrollado siendo su código código nuevo.
+Se Solicita:
+1. Desarrolle la clase Persona que implementa Informable
+2. Desarrolle el método estático registrarEncuesta la cual se debe registrarse con
+los nombres del encuestado en mayúscula.
+3. Desarrolle el método estático mostrarResultados
+4. Desarrolla el método estático eliminarUltimoRegistro
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.OptionalDouble;
+import java.util.stream.Collectors;
+
+interface Informable {
+    String getInformacion();
+}
+
+class Persona implements Informable {
+    private String nombre;
+    
+    public Persona(String nombre) {
+        this.nombre = nombre;
+    }
+
+    @Override
+    public String getInformacion() {
+        return nombre; // Devuelve el nombre para que lo use la Encuestadora
+    }
+}
+
+class Encuesta {
+    private String nombre;
+    private int puntaje;
+
+    public Encuesta(String nombre, int puntaje) {
+        this.nombre = nombre;
+        this.puntaje = puntaje;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public int getPuntaje() {
+        return puntaje;
+    }
+
+    @Override
+    public String toString() {
+        return "Encuesta [Nombre: " + nombre + ", Puntaje: " + puntaje + "]";
+    }
+}
+
+public class EncuestadoraAvanzada {
+    
+    private static List<Encuesta> registros = new ArrayList<>();
+
+    public static void registrarEncuesta(Informable encuestado, int puntaje) {
+        // Validación de puntaje
+        if (puntaje < 1 || puntaje > 5) {
+            System.err.println("Error: El puntaje (" + puntaje + ") debe estar entre 1 y 5.");
+            return;
+        }
+        
+        String nombreMayuscula = encuestado.getInformacion().toUpperCase();
+        Encuesta nuevaEncuesta = new Encuesta(nombreMayuscula, puntaje);
+        registros.add(nuevaEncuesta);
+        System.out.println("✅ Encuesta registrada para " + nombreMayuscula);
+    }
+
+    public static void mostrarResultados() {
+        if (registros.isEmpty()) {
+            System.out.println("\n❌ No hay encuestas registradas para mostrar.");
+            return;
+        }
+
+        System.out.println("\n--- Resultados de Encuestas ---");
+        
+        for (Encuesta e : registros) {
+            System.out.println(e.toString());
+        }
+        
+        OptionalDouble promedio = registros.stream()
+            .mapToInt(Encuesta::getPuntaje)
+            .average();
+
+        if (promedio.isPresent()) {
+             System.out.printf("⭐ Promedio de Satisfacción: %.2f\n", promedio.getAsDouble());
+        }
+        System.out.println("------------------------------");
+    }
+  
+    public static void eliminarUltimoRegistro() {
+        if (registros.isEmpty()) {
+            System.out.println("❌ No hay registros para eliminar.");
+            return;
+        }
+        
+        Encuesta eliminado = registros.remove(registros.size() - 1);
+        System.out.println("🗑️ Registro eliminado: " + eliminado.getNombre() + " (" + eliminado.getPuntaje() + ")");
+    }
+    
+    public static void main(String[] args) {
+        Persona p1 = new Persona("Ana Lopez");
+        Persona p2 = new Persona("Juan Perez");
+      
+        registrarEncuesta(p1, 5);
+        registrarEncuesta(p2, 3);
+        registrarEncuesta(new Persona("Carlos Ruiz"), 4);
+        registrarEncuesta(p1, 6); // Error de validación
+
+        mostrarResultados();
+        
+        eliminarUltimoRegistro();
+      
+        mostrarResultados();
+    }
+}
+
+
+
+Dada la Clase en imagen adjunta, complete los elementos faltantes para 6 puntos
+que la clase cumplimente el Patrón JAVABean. 
+
+import java.io.Serializable;
+
+public class Perro implements Serializable { // Implementa Serializable
+    private String nombre;
+    private String raza;
+    
+    // Constructor público sin argumentos (Requisito CLAVE de JavaBean)
+    public Perro() { 
+        // Inicialización por defecto
+    }
+    
+    // Constructor con argumentos
+    public Perro(String nombre, String raza) {
+        this.nombre = nombre;
+        this.raza = raza; 
+    }
+    
+    // Getters y Setters
+    public String getRaza() {
+        return raza;
+    }
+    
+    public void setRaza(String raza) {
+        this.raza = raza;
+    }
+    
+    public String getNombre() {
+        return nombre;
+    }
+    
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    
+    @Override
+    public String toString() {
+        return "Perro: "+this.nombre +" Raza: "+this.raza;
+    }
+}
