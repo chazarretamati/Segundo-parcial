@@ -1,0 +1,192 @@
+¿Cuál es el resultado exacto que se imprime en la consola al ejecutar el método main y cuál de los siguientes enunciados explica correctamente el comportamiento del método auditar() en la LLAMADA 2?
+interface IContratoA {
+    void procesar();
+}
+
+interface IContratoB extends IContratoA {
+    default void auditar() {
+        System.out.println("Auditoria de B");
+    }
+}
+
+class Implementacion implements IContratoB {
+    public void procesar() {
+        System.out.println("Procesamiento OK");
+    }
+}
+
+class Prueba {
+    public static void main(String[] args) {
+        IContratoB obj = new Implementacion();
+        // LLAMADA 1
+        obj.procesar();
+        // LLAMADA 2
+        obj.auditar();
+    }
+}
+// Respuesta: Opción B: La salida es: Procesamiento OK Auditoria de B Esto ocurre porque la
+clase Implementacion hereda el método default auditar() de IContratoB y utiliza
+automáticamente esa implementación predeterminada.
+
+class Material {
+    Material(String s) {
+        System.out.print("M:" + s + " ");
+    }
+}
+
+Pregunta: ¿Cuál es la salida exacta impresa en la consola cuando se ejecuta el método main? 
+class Base extends Material {
+    Base() {
+        super("A"); // Llamada explícita al constructor de Material
+        System.out.print("B:0 ");
+    }
+}
+
+class Mezcla extends Base {
+    Mezcla(int i) {
+        // Llamada implícita a super() al inicio
+        System.out.print("X:" + i + " ");
+    }
+}
+
+public class TestHerencia {
+    public static void main(String[] args) {
+        new Mezcla(5);
+    }
+}
+Respuesta Correcta
+La respuesta correcta es M:A B:0 X:5
+
+Java
+
+public class Choosy {
+    public static void main(String[] args) {
+        String result = "";
+        int x = 7, y = 8;
+        if (x == 3) { 
+            result += "1"; 
+        } else if (x > 9) { 
+            result += "2"; 
+        } else if (y < 9) { 
+            result += "3"; 
+        } else if (x == 7) { 
+            result += "4"; 
+        } else { 
+            result += "5"; 
+        }
+        System.out.println(result);
+    }
+}
+
+Pregunta: Dado el código, ¿cuál es el resultado? 
+
+Respuesta Correcta
+La respuesta correcta es 3.
+
+public class PerfilUsuario implements Serializable {
+    private String nombre;
+    private List<String> emails;
+
+    // ... constructores ...
+
+    public List<String> getEmails() {
+        return emails;
+    }
+
+    public void setEmails (List<String> emails) {
+        this.emails = emails;
+    }
+    // ... otros getters/setters ...
+}
+
+Pregunta: Identifique el error de diseño que viola el encapsulamiento a pesar de cumplir con los requisitos básicos (atributos privados, constructor simple, getters/setters). 
+
+Respuesta Correcta
+La respuesta correcta es la Opción B:
+
+
+Java
+
+2. public class Jail {
+3.     private int x = 4;
+4.     public static void main(String[] args) {
+5.         protected int x = 6; // <-- LÍNEA 5
+6.         new Jail().new Cell().slam();
+7.     }
+8.     class Cell {
+9.         void slam() { System.out.println("throw away key " + x); }
+10.     }
+11. }
+
+Pregunta: Dado el código, ¿cuál es el resultado? 
+
+Respuesta Correcta
+La respuesta correcta es Compilación falla debido a error en línea 5.
+
+
+Java
+
+class Feline { }
+public class BarnCat2 extends Feline {
+    public static void main(String[] args) {
+        Feline ff = new Feline();
+        BarnCat2 b = new BarnCat2();
+        // insert code here
+    }
+}
+
+Pregunta: Seleccione la opción CORRECTA que compilaría insertada en la línea comentada // insert code here.
+Respuesta Correcta
+La respuesta correcta es la Opción C o D (son funcionalmente idénticas, impresas como 3 y 4):
+if (b instanceof Feline) System.out.print("3");
+
+
+public class LoopScopeTest {
+    public static void main(String[] args) {
+        String result = "";
+        int val = 5;
+        for (int i = 0; i < 3; i++) {
+            if (i == 1) {
+            }
+            // Punto 1: Post-incremento
+            int loopVar = val++;
+            result += "A" + loopVar + " ";
+
+            if (i == 2) {
+                // Punto 2: Pre-incremento
+                int loopVar = ++val;
+                result += "B" + loopVar + " ";
+                break; // Salida del ciclo
+            }
+        }
+        System.out.println(result + "ValFinal:" + val);
+    }
+}
+
+Pregunta: ¿Cuál es la salida exacta que produce el código al ser ejecutado? 
+
+Respuesta Correcta
+La respuesta correcta es A5 B8 ValFinal:8.
+
+
+
+public class Bunnies {
+    static int count = 0;
+    
+    Bunnies () {
+        while (count < 10) new Bunnies (++count);
+    }
+    
+    Bunnies (int x) { super(); }
+    
+    public static void main(String[] args) {
+        new Bunnies(); // Llamada 1
+        new Bunnies (count); // Llamada 2
+        System.out.println(count++); // Llamada 3
+    }
+}
+
+Pregunta: Dado el código, ¿cuál es el resultado? 
+
+Respuesta Correcta
+La respuesta correcta es 10.
